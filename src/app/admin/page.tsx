@@ -8,6 +8,7 @@ import {
   createMapLocationAction,
   deleteMapLocationAction,
 } from "@/lib/actions/admin";
+import { UsersIcon, HotelIcon, RideIcon, FerryIcon } from "@/components/icons";
 
 const ROLES = ["VISITOR", "HOTEL_STAFF", "FERRY_STAFF", "PARK_STAFF", "ADMIN"] as const;
 
@@ -34,28 +35,42 @@ export default async function AdminDashboard() {
   return (
     <div className="mx-auto max-w-6xl w-full px-4 py-10 space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
+        <h1 className="font-display text-2xl font-medium text-lagoon-900 dark:text-sand-50">
+          Admin Dashboard
+        </h1>
         <p className="text-neutral-500">
           Oversee users, content, and system-wide reports for Picnic Island.
         </p>
       </div>
 
       <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="card">
-          <p className="text-sm text-neutral-500">Total users</p>
-          <p className="text-2xl font-semibold">{users.length}</p>
+        <div className="card flex items-start gap-3">
+          <UsersIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Total users</p>
+            <p className="text-2xl font-semibold">{users.length}</p>
+          </div>
         </div>
-        <div className="card">
-          <p className="text-sm text-neutral-500">Hotel revenue</p>
-          <p className="text-2xl font-semibold">${hotelRevenue.toFixed(2)}</p>
+        <div className="card flex items-start gap-3">
+          <HotelIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Hotel revenue</p>
+            <p className="text-2xl font-semibold">${hotelRevenue.toFixed(2)}</p>
+          </div>
         </div>
-        <div className="card">
-          <p className="text-sm text-neutral-500">Theme park revenue</p>
-          <p className="text-2xl font-semibold">${parkRevenue.toFixed(2)}</p>
+        <div className="card flex items-start gap-3">
+          <RideIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Theme park revenue</p>
+            <p className="text-2xl font-semibold">${parkRevenue.toFixed(2)}</p>
+          </div>
         </div>
-        <div className="card">
-          <p className="text-sm text-neutral-500">Ferry passengers</p>
-          <p className="text-2xl font-semibold">{totalPassengers}</p>
+        <div className="card flex items-start gap-3">
+          <FerryIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Ferry passengers</p>
+            <p className="text-2xl font-semibold">{totalPassengers}</p>
+          </div>
         </div>
       </section>
 

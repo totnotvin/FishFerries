@@ -20,7 +20,7 @@ export default async function BookEventPage({
   return (
     <div className="mx-auto max-w-lg w-full px-4 py-10">
       <div className="card">
-        <h1 className="text-xl font-semibold">{event.name}</h1>
+        <h1 className="font-display text-xl font-medium text-lagoon-900 dark:text-sand-50">{event.name}</h1>
         <p className="text-sm text-neutral-500 mb-6">
           {event.date.toDateString()} · {event.time}
         </p>

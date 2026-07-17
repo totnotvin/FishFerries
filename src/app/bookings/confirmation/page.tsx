@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { CheckCircleIcon } from "@/components/icons";
 
 export default async function ConfirmationPage({
   searchParams,
@@ -62,8 +63,8 @@ export default async function ConfirmationPage({
   return (
     <div className="mx-auto max-w-lg w-full px-4 py-16">
       <div className="card text-center">
-        <div className="text-4xl mb-3">✅</div>
-        <h1 className="text-xl font-semibold">{title}</h1>
+        <CheckCircleIcon className="w-10 h-10 mx-auto mb-3 text-palm-500" />
+        <h1 className="font-display text-xl font-medium text-lagoon-900 dark:text-sand-50">{title}</h1>
         <dl className="mt-6 text-left space-y-2">
           {details.map((d) => (
             <div key={d.label} className="flex justify-between text-sm border-b border-black/5 dark:border-white/10 pb-2">

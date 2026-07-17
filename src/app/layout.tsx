@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import { Nav } from "@/components/Nav";
 import "./globals.css";
 
@@ -11,6 +11,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -26,12 +32,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-neutral-50 dark:bg-neutral-950">
+      <body className="min-h-full flex flex-col bg-sand-50 dark:bg-lagoon-900">
         <Nav />
         <main className="flex-1 flex flex-col">{children}</main>
-        <footer className="border-t border-black/10 dark:border-white/10 py-6 text-center text-xs text-neutral-500">
+        <footer className="border-t border-lagoon-900/10 dark:border-white/10 py-6 text-center text-xs text-lagoon-900/50 dark:text-sand-100/50">
           Picnic Island Theme Park &copy; {new Date().getFullYear()} — Online Booking System
         </footer>
       </body>

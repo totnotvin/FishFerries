@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { HotelIcon } from "@/components/icons";
 
 export default async function HotelsPage() {
   const hotels = await prisma.hotel.findMany({
@@ -8,7 +9,9 @@ export default async function HotelsPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 w-full">
-      <h1 className="text-2xl font-semibold mb-1">Hotel Stays</h1>
+      <h1 className="font-display text-2xl font-medium mb-1 text-lagoon-900 dark:text-sand-50">
+        Hotel stays
+      </h1>
       <p className="text-neutral-500 mb-8">
         Choose your room and dates. A confirmed hotel booking unlocks ferry ticket purchases.
       </p>
@@ -22,16 +25,21 @@ export default async function HotelsPage() {
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {hotel.rooms.map((room) => (
-                <div key={room.id} className="card flex flex-col">
-                  <h3 className="font-semibold">{room.type}</h3>
-                  <p className="text-sm text-neutral-500 mt-1">Sleeps up to {room.capacity}</p>
-                  <p className="mt-3 text-xl font-semibold text-teal-700">
-                    ${room.pricePerNight.toFixed(0)}
-                    <span className="text-sm font-normal text-neutral-500"> / night</span>
-                  </p>
-                  <Link href={`/hotels/book/${room.id}`} className="btn-primary mt-4">
-                    Book this room
-                  </Link>
+                <div key={room.id} className="card flex flex-col overflow-hidden !p-0">
+                  <div className="h-20 bg-gradient-to-br from-lagoon-500 to-lagoon-700 flex items-center justify-center">
+                    <HotelIcon className="w-8 h-8 text-white/90" />
+                  </div>
+                  <div className="p-5 flex flex-col flex-1">
+                    <h3 className="font-semibold">{room.type}</h3>
+                    <p className="text-sm text-neutral-500 mt-1">Sleeps up to {room.capacity}</p>
+                    <p className="mt-3 text-xl font-semibold text-lagoon-700 dark:text-lagoon-300">
+                      ${room.pricePerNight.toFixed(0)}
+                      <span className="text-sm font-normal text-neutral-500"> / night</span>
+                    </p>
+                    <Link href={`/hotels/book/${room.id}`} className="btn-primary mt-4">
+                      Book this room
+                    </Link>
+                  </div>
                 </div>
               ))}
               {hotel.rooms.length === 0 && (

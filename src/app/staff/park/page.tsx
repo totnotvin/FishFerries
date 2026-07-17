@@ -8,6 +8,7 @@ import {
   togglePromotionActiveAction,
 } from "@/lib/actions/park";
 import { OnSiteValidator } from "@/components/OnSiteValidator";
+import { CalendarIcon, TicketIcon, PriceTagIcon, RideIcon } from "@/components/icons";
 
 function StatusBadge({ status }: { status: string }) {
   const cls =
@@ -36,28 +37,42 @@ export default async function ParkStaffDashboard() {
   return (
     <div className="mx-auto max-w-6xl w-full px-4 py-10 space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold">Theme Park Staff Dashboard</h1>
+        <h1 className="font-display text-2xl font-medium text-lagoon-900 dark:text-sand-50">
+          Theme Park Staff Dashboard
+        </h1>
         <p className="text-neutral-500">
           Manage events, capacity, ticket sales, and on-site validation.
         </p>
       </div>
 
       <section className="grid sm:grid-cols-4 gap-4">
-        <div className="card">
-          <p className="text-sm text-neutral-500">Events scheduled</p>
-          <p className="text-2xl font-semibold">{events.length}</p>
+        <div className="card flex items-start gap-3">
+          <CalendarIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Events scheduled</p>
+            <p className="text-2xl font-semibold">{events.length}</p>
+          </div>
         </div>
-        <div className="card">
-          <p className="text-sm text-neutral-500">Bookings</p>
-          <p className="text-2xl font-semibold">{bookings.length}</p>
+        <div className="card flex items-start gap-3">
+          <RideIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Bookings</p>
+            <p className="text-2xl font-semibold">{bookings.length}</p>
+          </div>
         </div>
-        <div className="card">
-          <p className="text-sm text-neutral-500">Tickets sold</p>
-          <p className="text-2xl font-semibold">{ticketsSold}</p>
+        <div className="card flex items-start gap-3">
+          <TicketIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Tickets sold</p>
+            <p className="text-2xl font-semibold">{ticketsSold}</p>
+          </div>
         </div>
-        <div className="card">
-          <p className="text-sm text-neutral-500">Revenue</p>
-          <p className="text-2xl font-semibold">${revenue.toFixed(2)}</p>
+        <div className="card flex items-start gap-3">
+          <PriceTagIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Revenue</p>
+            <p className="text-2xl font-semibold">${revenue.toFixed(2)}</p>
+          </div>
         </div>
       </section>
 
@@ -83,21 +98,83 @@ export default async function ParkStaffDashboard() {
                 const booked = e.bookings.reduce((s, b) => s + b.ticketCount, 0);
                 return (
                   <tr key={e.id} className="border-b border-black/5 dark:border-white/5">
-                    <td className="py-2 pr-3">{e.name}</td>
-                    <td className="py-2 pr-3">{e.type.replace("_", " ")}</td>
                     <td className="py-2 pr-3">
-                      {e.date.toDateString()} {e.time}
+                      <input
+                        className="input !py-1 !w-32"
+                        form={`event-form-${e.id}`}
+                        name="name"
+                        defaultValue={e.name}
+                      />
+                      <input type="hidden" form={`event-form-${e.id}`} name="eventId" value={e.id} />
+                      <input
+                        type="hidden"
+                        form={`event-form-${e.id}`}
+                        name="description"
+                        defaultValue={e.description}
+                      />
+                      <form action={updateParkEventAction} id={`event-form-${e.id}`} />
                     </td>
-                    <td className="py-2 pr-3">{e.capacity}</td>
-                    <td className="py-2 pr-3">{booked}</td>
-                    <td className="py-2 pr-3">${e.price.toFixed(0)}</td>
                     <td className="py-2 pr-3">
-                      <form action={deleteParkEventAction}>
-                        <input type="hidden" name="eventId" value={e.id} />
-                        <button className="btn-danger text-xs" type="submit">
-                          Remove
+                      <select
+                        className="input !py-1"
+                        form={`event-form-${e.id}`}
+                        name="type"
+                        defaultValue={e.type}
+                      >
+                        <option value="RIDE">Ride</option>
+                        <option value="SHOW">Show</option>
+                        <option value="BEACH_EVENT">Beach Event</option>
+                      </select>
+                    </td>
+                    <td className="py-2 pr-3">
+                      <div className="flex gap-1">
+                        <input
+                          className="input !py-1 !w-32"
+                          form={`event-form-${e.id}`}
+                          name="date"
+                          type="date"
+                          defaultValue={e.date.toISOString().slice(0, 10)}
+                        />
+                        <input
+                          className="input !py-1 !w-16"
+                          form={`event-form-${e.id}`}
+                          name="time"
+                          defaultValue={e.time}
+                        />
+                      </div>
+                    </td>
+                    <td className="py-2 pr-3">
+                      <input
+                        className="input !py-1 !w-16"
+                        form={`event-form-${e.id}`}
+                        name="capacity"
+                        type="number"
+                        defaultValue={e.capacity}
+                      />
+                    </td>
+                    <td className="py-2 pr-3">{booked}</td>
+                    <td className="py-2 pr-3">
+                      <input
+                        className="input !py-1 !w-16"
+                        form={`event-form-${e.id}`}
+                        name="price"
+                        type="number"
+                        step="0.01"
+                        defaultValue={e.price}
+                      />
+                    </td>
+                    <td className="py-2 pr-3">
+                      <div className="flex gap-2">
+                        <button className="btn-secondary text-xs" form={`event-form-${e.id}`} type="submit">
+                          Save
                         </button>
-                      </form>
+                        <form action={deleteParkEventAction}>
+                          <input type="hidden" name="eventId" value={e.id} />
+                          <button className="btn-danger text-xs" type="submit">
+                            Remove
+                          </button>
+                        </form>
+                      </div>
                     </td>
                   </tr>
                 );

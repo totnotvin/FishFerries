@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { ParkTabs } from "@/components/ParkTabs";
 
 const TYPE_LABELS: Record<string, string> = {
   RIDE: "Rides",
@@ -7,11 +7,7 @@ const TYPE_LABELS: Record<string, string> = {
   BEACH_EVENT: "Beach Events",
 };
 
-const TYPE_EMOJI: Record<string, string> = {
-  RIDE: "🎢",
-  SHOW: "🎭",
-  BEACH_EVENT: "🏖️",
-};
+const TYPE_ORDER = ["RIDE", "SHOW", "BEACH_EVENT"];
 
 export default async function ParkPage() {
   const events = await prisma.parkEvent.findMany({
@@ -19,57 +15,39 @@ export default async function ParkPage() {
     include: { bookings: { where: { status: { not: "CANCELLED" } } } },
   });
 
-  const grouped = events.reduce<Record<string, typeof events>>((acc, e) => {
-    (acc[e.type] ??= []).push(e);
-    return acc;
-  }, {});
+  const groups = TYPE_ORDER.map((type) => ({
+    type,
+    label: TYPE_LABELS[type],
+    events: events
+      .filter((e) => e.type === type)
+      .map((e) => {
+        const taken = e.bookings.reduce((s, b) => s + b.ticketCount, 0);
+        return {
+          id: e.id,
+          name: e.name,
+          description: e.description,
+          date: e.date.toDateString(),
+          time: e.time,
+          price: e.price,
+          remaining: e.capacity - taken,
+        };
+      }),
+  }));
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 w-full">
-      <h1 className="text-2xl font-semibold mb-1">Theme Park Activities & Beach Events</h1>
+      <h1 className="font-display text-2xl font-medium mb-1 text-lagoon-900 dark:text-sand-50">
+        Theme park activities &amp; beach events
+      </h1>
       <p className="text-neutral-500 mb-8">
         Book rides, shows, and beach events inside the theme park.
       </p>
 
-      <div className="space-y-10">
-        {Object.entries(grouped).map(([type, list]) => (
-          <section key={type}>
-            <h2 className="text-lg font-semibold mb-4">
-              {TYPE_EMOJI[type]} {TYPE_LABELS[type]}
-            </h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {list.map((event) => {
-                const taken = event.bookings.reduce((s, b) => s + b.ticketCount, 0);
-                const remaining = event.capacity - taken;
-                return (
-                  <div key={event.id} className="card flex flex-col">
-                    <h3 className="font-semibold">{event.name}</h3>
-                    <p className="text-sm text-neutral-500 mt-1">{event.description}</p>
-                    <p className="text-sm mt-2">
-                      {event.date.toDateString()} · {event.time}
-                    </p>
-                    <p className="text-sm text-neutral-500">
-                      {remaining > 0 ? `${remaining} spots left` : "Sold out"}
-                    </p>
-                    <p className="mt-2 text-xl font-semibold text-teal-700">
-                      {event.price === 0 ? "Free" : `$${event.price.toFixed(0)}`}
-                    </p>
-                    <Link
-                      href={`/park/book/${event.id}`}
-                      className={`btn-primary mt-4 ${remaining <= 0 ? "pointer-events-none opacity-50" : ""}`}
-                    >
-                      {remaining > 0 ? "Book now" : "Sold out"}
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        ))}
-        {events.length === 0 && (
-          <p className="text-neutral-500">No events scheduled yet — check back soon.</p>
-        )}
-      </div>
+      {events.length > 0 ? (
+        <ParkTabs groups={groups} />
+      ) : (
+        <p className="text-neutral-500">No events scheduled yet — check back soon.</p>
+      )}
     </div>
   );
 }

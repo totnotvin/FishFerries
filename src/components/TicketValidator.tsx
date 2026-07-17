@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { validateTicketAction, type ValidateState } from "@/lib/actions/ferry";
+import { CheckCircleIcon } from "@/components/icons";
 
 export function TicketValidator() {
   const [state, formAction, pending] = useActionState<ValidateState, FormData>(
@@ -24,8 +25,10 @@ export function TicketValidator() {
       )}
 
       {state?.ticket && (
-        <div className="mt-3 rounded-lg bg-green-50 text-green-800 p-3 text-sm space-y-1">
-          <p className="font-medium">✅ Valid ticket — hotel booking confirmed</p>
+        <div className="mt-3 rounded-lg bg-palm-500/10 text-palm-600 p-3 text-sm space-y-1">
+          <p className="font-medium flex items-center gap-1.5">
+            <CheckCircleIcon className="w-4 h-4" /> Valid ticket — hotel booking confirmed
+          </p>
           <p>Passenger: {state.ticket.passengerName}</p>
           <p>Route: {state.ticket.route}</p>
           <p>Departure: {state.ticket.departureTime}</p>

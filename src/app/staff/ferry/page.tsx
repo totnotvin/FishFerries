@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { createScheduleAction, deleteScheduleAction, cancelFerryTicketAction } from "@/lib/actions/ferry";
 import { TicketValidator } from "@/components/TicketValidator";
+import { CalendarIcon, TicketIcon, UsersIcon } from "@/components/icons";
 
 function StatusBadge({ status }: { status: string }) {
   const cls =
@@ -28,22 +29,33 @@ export default async function FerryStaffDashboard() {
   return (
     <div className="mx-auto max-w-6xl w-full px-4 py-10 space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold">Ferry Staff Dashboard</h1>
+        <h1 className="font-display text-2xl font-medium text-lagoon-900 dark:text-sand-50">
+          Ferry Staff Dashboard
+        </h1>
         <p className="text-neutral-500">Validate tickets, manage sailings, and view trip reports.</p>
       </div>
 
       <section className="grid sm:grid-cols-3 gap-4">
-        <div className="card">
-          <p className="text-sm text-neutral-500">Sailings scheduled</p>
-          <p className="text-2xl font-semibold">{schedules.length}</p>
+        <div className="card flex items-start gap-3">
+          <CalendarIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Sailings scheduled</p>
+            <p className="text-2xl font-semibold">{schedules.length}</p>
+          </div>
         </div>
-        <div className="card">
-          <p className="text-sm text-neutral-500">Tickets issued</p>
-          <p className="text-2xl font-semibold">{tickets.length}</p>
+        <div className="card flex items-start gap-3">
+          <TicketIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Tickets issued</p>
+            <p className="text-2xl font-semibold">{tickets.length}</p>
+          </div>
         </div>
-        <div className="card">
-          <p className="text-sm text-neutral-500">Total passengers</p>
-          <p className="text-2xl font-semibold">{totalPassengers}</p>
+        <div className="card flex items-start gap-3">
+          <UsersIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Total passengers</p>
+            <p className="text-2xl font-semibold">{totalPassengers}</p>
+          </div>
         </div>
       </section>
 

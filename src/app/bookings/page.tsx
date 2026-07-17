@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { cancelHotelBookingAction } from "@/lib/actions/hotel";
 import { cancelFerryTicketAction } from "@/lib/actions/ferry";
 import { cancelParkBookingAction } from "@/lib/actions/park";
+import { HotelIcon, FerryIcon, RideIcon } from "@/components/icons";
 
 function StatusBadge({ status }: { status: string }) {
   const cls =
@@ -34,10 +35,10 @@ export default async function BookingsPage() {
 
   return (
     <div className="mx-auto max-w-4xl w-full px-4 py-10 space-y-10">
-      <h1 className="text-2xl font-semibold">My Bookings</h1>
+      <h1 className="font-display text-2xl font-medium text-lagoon-900 dark:text-sand-50">My Bookings</h1>
 
       <section>
-        <h2 className="text-lg font-semibold mb-3">🏨 Hotel Bookings</h2>
+        <h2 className="text-lg font-semibold mb-3 flex items-center gap-2"><HotelIcon className="w-5 h-5 text-lagoon-600" /> Hotel Bookings</h2>
         <div className="space-y-3">
           {hotelBookings.map((b) => (
             <div key={b.id} className="card flex items-center justify-between gap-4 flex-wrap">
@@ -70,7 +71,7 @@ export default async function BookingsPage() {
       </section>
 
       <section>
-        <h2 className="text-lg font-semibold mb-3">⛴️ Ferry Tickets</h2>
+        <h2 className="text-lg font-semibold mb-3 flex items-center gap-2"><FerryIcon className="w-5 h-5 text-lagoon-600" /> Ferry Tickets</h2>
         <div className="space-y-3">
           {ferryTickets.map((t) => (
             <div key={t.id} className="card flex items-center justify-between gap-4 flex-wrap">
@@ -103,7 +104,7 @@ export default async function BookingsPage() {
       </section>
 
       <section>
-        <h2 className="text-lg font-semibold mb-3">🎢 Theme Park & Beach Bookings</h2>
+        <h2 className="text-lg font-semibold mb-3 flex items-center gap-2"><RideIcon className="w-5 h-5 text-lagoon-600" /> Theme Park &amp; Beach Bookings</h2>
         <div className="space-y-3">
           {parkBookings.map((b) => (
             <div key={b.id} className="card flex items-center justify-between gap-4 flex-wrap">

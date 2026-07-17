@@ -17,7 +17,7 @@ export default async function BookRoomPage({
   return (
     <div className="mx-auto max-w-lg w-full px-4 py-10">
       <div className="card">
-        <h1 className="text-xl font-semibold">{room.hotel.name}</h1>
+        <h1 className="font-display text-xl font-medium text-lagoon-900 dark:text-sand-50">{room.hotel.name}</h1>
         <p className="text-sm text-neutral-500 mb-6">{room.type} · {room.hotel.location}</p>
         <HotelBookingForm
           roomId={room.id}

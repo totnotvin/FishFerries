@@ -1,8 +1,39 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fffdf8;
+  --foreground: #17302d;
+
+  /* Tropical picnic palette — replaces default Tailwind teal/cyan */
+  --color-lagoon-50: #eefbfa;
+  --color-lagoon-100: #d4f3f1;
+  --color-lagoon-200: #a9e6e2;
+  --color-lagoon-300: #72d1cb;
+  --color-lagoon-400: #3fb3ac;
+  --color-lagoon-500: #1f948d;
+  --color-lagoon-600: #157872;
+  --color-lagoon-700: #146560;
+  --color-lagoon-800: #14514e;
+  --color-lagoon-900: #124442;
+
+  --color-coral-50: #fff2ed;
+  --color-coral-100: #ffe0d3;
+  --color-coral-300: #ffab86;
+  --color-coral-400: #ff8f6b;
+  --color-coral-500: #f96c42;
+  --color-coral-600: #e5502a;
+  --color-coral-700: #c13d1d;
+
+  --color-sand-50: #fffdf8;
+  --color-sand-100: #fbf3e3;
+  --color-sand-200: #f5e6c8;
+  --color-sand-300: #ecd6a8;
+
+  --color-palm-500: #4c8c4a;
+  --color-palm-600: #3c7239;
+
+  --color-gold-400: #f2b134;
+  --color-gold-500: #e59c1a;
 }
 
 @theme inline {
@@ -10,45 +41,79 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-fraunces);
+
+  --color-lagoon-50: var(--color-lagoon-50);
+  --color-lagoon-100: var(--color-lagoon-100);
+  --color-lagoon-200: var(--color-lagoon-200);
+  --color-lagoon-300: var(--color-lagoon-300);
+  --color-lagoon-400: var(--color-lagoon-400);
+  --color-lagoon-500: var(--color-lagoon-500);
+  --color-lagoon-600: var(--color-lagoon-600);
+  --color-lagoon-700: var(--color-lagoon-700);
+  --color-lagoon-800: var(--color-lagoon-800);
+  --color-lagoon-900: var(--color-lagoon-900);
+
+  --color-coral-50: var(--color-coral-50);
+  --color-coral-100: var(--color-coral-100);
+  --color-coral-300: var(--color-coral-300);
+  --color-coral-400: var(--color-coral-400);
+  --color-coral-500: var(--color-coral-500);
+  --color-coral-600: var(--color-coral-600);
+  --color-coral-700: var(--color-coral-700);
+
+  --color-sand-50: var(--color-sand-50);
+  --color-sand-100: var(--color-sand-100);
+  --color-sand-200: var(--color-sand-200);
+  --color-sand-300: var(--color-sand-300);
+
+  --color-palm-500: var(--color-palm-500);
+  --color-palm-600: var(--color-palm-600);
+
+  --color-gold-400: var(--color-gold-400);
+  --color-gold-500: var(--color-gold-500);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0e1817;
+    --foreground: #f2ede1;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
 @layer components {
+  .font-display {
+    font-family: var(--font-display), Georgia, serif;
+  }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-teal-600 text-white hover:bg-teal-700;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-coral-500 text-white hover:bg-coral-600;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-white text-teal-700 border border-teal-600 hover:bg-teal-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-white text-lagoon-700 border border-lagoon-600 hover:bg-lagoon-50 dark:bg-transparent dark:text-lagoon-200 dark:border-lagoon-300/40 dark:hover:bg-lagoon-900/40;
   }
   .btn-danger {
     @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-red-600 text-white hover:bg-red-700;
   }
   .card {
-    @apply rounded-xl border border-black/10 bg-white p-5 shadow-sm dark:bg-neutral-900 dark:border-white/10;
+    @apply rounded-xl border border-lagoon-900/10 bg-white p-5 shadow-sm dark:bg-lagoon-900/40 dark:border-white/10;
   }
   .input {
-    @apply w-full rounded-lg border border-black/15 px-3 py-2 text-sm outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 dark:bg-neutral-900 dark:border-white/15;
+    @apply w-full rounded-lg border border-lagoon-900/15 px-3 py-2 text-sm outline-none focus:border-lagoon-600 focus:ring-1 focus:ring-lagoon-600 dark:bg-neutral-900 dark:border-white/15;
   }
   .label {
-    @apply block text-sm font-medium mb-1 text-neutral-700 dark:text-neutral-300;
+    @apply block text-sm font-medium mb-1 text-lagoon-900/70 dark:text-lagoon-100/80;
   }
   .badge-confirmed {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-100 text-green-800;
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-palm-500/15 text-palm-600;
   }
   .badge-pending {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-amber-100 text-amber-800;
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-gold-400/20 text-gold-500;
   }
   .badge-cancelled {
     @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-red-100 text-red-800;

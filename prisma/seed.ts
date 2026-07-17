@@ -10,7 +10,7 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   const password = await bcrypt.hash("password123", 10);
 
-  const [visitor, hotelStaff, ferryStaff, parkStaff, admin] = await Promise.all([
+  const [visitor, hotelStaff, , parkStaff, admin] = await Promise.all([
     prisma.user.upsert({
       where: { email: "visitor@picnicisland.test" },
       update: {},
@@ -129,8 +129,8 @@ async function main() {
 
   const locationData = [
     { id: "seed-loc-1", name: "Lagoon View Resort", description: "Beachfront hotel with lagoon access.", category: "Hotel", x: 20, y: 30, createdById: admin.id },
-    { id: "seed-loc-2", name: "Palm Grove Inn", description: "Garden bungalows near the pier.", category: "Hotel", x: 70, y: 20, createdById: admin.id },
-    { id: "seed-loc-3", name: "East Pier Ferry Terminal", description: "Ferry arrivals & departures.", category: "Ferry", x: 78, y: 15, createdById: admin.id },
+    { id: "seed-loc-2", name: "Palm Grove Inn", description: "Garden bungalows near the pier.", category: "Hotel", x: 62, y: 22, createdById: admin.id },
+    { id: "seed-loc-3", name: "East Pier Ferry Terminal", description: "Ferry arrivals & departures.", category: "Ferry", x: 85, y: 18, createdById: admin.id },
     { id: "seed-loc-4", name: "Coral Coaster", description: "The island's tallest roller coaster.", category: "Theme Park", x: 45, y: 55, createdById: admin.id },
     { id: "seed-loc-5", name: "Sunset Beach", description: "Home to the nightly bonfire and beach events.", category: "Beach", x: 30, y: 75, createdById: admin.id },
     { id: "seed-loc-6", name: "Island Grill", description: "Casual dining with ocean views.", category: "Dining", x: 55, y: 40, createdById: admin.id },

@@ -7,6 +7,7 @@ import {
   createHotelPromotionAction,
   togglePromotionActiveAction,
 } from "@/lib/actions/hotel";
+import { CalendarIcon, CheckCircleIcon, PriceTagIcon } from "@/components/icons";
 
 function StatusBadge({ status }: { status: string }) {
   const cls =
@@ -32,22 +33,33 @@ export default async function HotelStaffDashboard() {
   return (
     <div className="mx-auto max-w-6xl w-full px-4 py-10 space-y-10">
       <div>
-        <h1 className="text-2xl font-semibold">Hotel Staff Dashboard</h1>
+        <h1 className="font-display text-2xl font-medium text-lagoon-900 dark:text-sand-50">
+          Hotel Staff Dashboard
+        </h1>
         <p className="text-neutral-500">Manage rooms, bookings, promotions, and reports.</p>
       </div>
 
       <section className="grid sm:grid-cols-3 gap-4">
-        <div className="card">
-          <p className="text-sm text-neutral-500">Total bookings</p>
-          <p className="text-2xl font-semibold">{bookings.length}</p>
+        <div className="card flex items-start gap-3">
+          <CalendarIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Total bookings</p>
+            <p className="text-2xl font-semibold">{bookings.length}</p>
+          </div>
         </div>
-        <div className="card">
-          <p className="text-sm text-neutral-500">Confirmed bookings</p>
-          <p className="text-2xl font-semibold">{confirmed.length}</p>
+        <div className="card flex items-start gap-3">
+          <CheckCircleIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Confirmed bookings</p>
+            <p className="text-2xl font-semibold">{confirmed.length}</p>
+          </div>
         </div>
-        <div className="card">
-          <p className="text-sm text-neutral-500">Revenue (confirmed)</p>
-          <p className="text-2xl font-semibold">${revenue.toFixed(2)}</p>
+        <div className="card flex items-start gap-3">
+          <PriceTagIcon className="w-5 h-5 text-lagoon-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-neutral-500">Revenue (confirmed)</p>
+            <p className="text-2xl font-semibold">${revenue.toFixed(2)}</p>
+          </div>
         </div>
       </section>
 

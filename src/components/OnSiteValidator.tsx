@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { validateOnSiteTicketAction, type FormState } from "@/lib/actions/park";
+import { CheckCircleIcon } from "@/components/icons";
 
 export function OnSiteValidator() {
   const [state, formAction, pending] = useActionState<FormState, FormData>(
@@ -22,8 +23,8 @@ export function OnSiteValidator() {
         <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2 mt-3">{state.error}</p>
       )}
       {state && !state.error && (
-        <p className="text-sm text-green-700 bg-green-50 rounded-lg px-3 py-2 mt-3">
-          ✅ Valid booking — admit guest
+        <p className="text-sm text-palm-600 bg-palm-500/10 rounded-lg px-3 py-2 mt-3 flex items-center gap-1.5">
+          <CheckCircleIcon className="w-4 h-4" /> Valid booking — admit guest
         </p>
       )}
     </div>
