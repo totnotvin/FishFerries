@@ -1,0 +1,160 @@
+// Picnic Island Theme Park — Online Booking System
+// Prisma schema / relational model
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Role {
+  VISITOR
+  HOTEL_STAFF
+  FERRY_STAFF
+  PARK_STAFF
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum ParkEventType {
+  RIDE
+  SHOW
+  BEACH_EVENT
+}
+
+enum PromotionScope {
+  HOTEL
+  PARK
+  GENERAL
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(VISITOR)
+  createdAt    DateTime @default(now())
+
+  hotelBookings HotelBooking[]
+  ferryTickets  FerryTicket[]
+  parkBookings  ParkBooking[]
+  promotions    Promotion[]     @relation("PromotionAuthor")
+  mapLocations  MapLocation[]   @relation("MapLocationAuthor")
+}
+
+model Hotel {
+  id          String @id @default(cuid())
+  name        String
+  description String
+  location    String
+
+  rooms Room[]
+}
+
+model Room {
+  id            String @id @default(cuid())
+  hotelId       String
+  hotel         Hotel  @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  type          String
+  pricePerNight Float
+  capacity      Int
+  totalUnits    Int    @default(5)
+
+  bookings HotelBooking[]
+}
+
+model HotelBooking {
+  id         String        @id @default(cuid())
+  userId     String
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roomId     String
+  room       Room          @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  checkIn    DateTime
+  checkOut   DateTime
+  guests     Int
+  status     BookingStatus @default(CONFIRMED)
+  totalPrice Float
+  createdAt  DateTime      @default(now())
+
+  ferryTickets FerryTicket[]
+}
+
+model FerrySchedule {
+  id            String   @id @default(cuid())
+  origin        String
+  destination   String
+  departureTime DateTime
+  capacity      Int      @default(50)
+
+  tickets FerryTicket[]
+}
+
+model FerryTicket {
+  id             String        @id @default(cuid())
+  userId         String
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scheduleId     String
+  schedule       FerrySchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  hotelBookingId String
+  hotelBooking   HotelBooking  @relation(fields: [hotelBookingId], references: [id], onDelete: Cascade)
+  passengers     Int           @default(1)
+  status         BookingStatus @default(CONFIRMED)
+  issuedAt       DateTime      @default(now())
+}
+
+model ParkEvent {
+  id          String        @id @default(cuid())
+  type        ParkEventType
+  name        String
+  description String
+  date        DateTime
+  time        String
+  capacity    Int
+  price       Float
+
+  bookings ParkBooking[]
+}
+
+model ParkBooking {
+  id          String        @id @default(cuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId     String
+  event       ParkEvent     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  ticketCount Int           @default(1)
+  status      BookingStatus @default(CONFIRMED)
+  createdAt   DateTime      @default(now())
+}
+
+model Promotion {
+  id          String         @id @default(cuid())
+  title       String
+  description String
+  imageEmoji  String         @default("🎉")
+  scope       PromotionScope @default(GENERAL)
+  active      Boolean        @default(true)
+  createdById String
+  createdBy   User           @relation("PromotionAuthor", fields: [createdById], references: [id], onDelete: Cascade)
+  createdAt   DateTime       @default(now())
+}
+
+model MapLocation {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  category    String
+  x           Float
+  y           Float
+  createdById String
+  createdBy   User     @relation("MapLocationAuthor", fields: [createdById], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+}
