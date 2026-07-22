@@ -1,37 +1,141 @@
-## Getting Started
+# Running the App — Demo / Presentation Guide
 
-First, run the development server:
+Repo: `https://github.com/totnotvin/FishFerries.git`
+
+Two things worth knowing before you start, both because of what's in
+`.gitignore`:
+
+1. **`.env` is not committed.** You must create it by hand on every new
+   machine (instructions below).
+2. **`dev.db` (the SQLite database) *is* committed**, already seeded with 5
+   demo accounts and sample bookings/hotels/events. So a fresh clone already
+   has working demo data — you don't strictly need to run migrations/seed
+   again unless you want a clean slate.
+
+Also not committed: `node_modules/`, `.next/`, and the generated Prisma
+client at `src/generated/prisma/` — all three get created by the install/
+generate steps below.
+
+---
+
+## Linux
 
 ```bash
+# 1. Get the code
+git clone https://github.com/totnotvin/FishFerries.git picnic-island-booking
+cd picnic-island-booking
+
+# 2. Install dependencies (Node 20+ required — check with `node -v`)
+npm install
+
+# 3. Create the .env file (values below are fine for a local demo)
+cat > .env <<'EOF'
+DATABASE_URL="file:./dev.db"
+AUTH_SECRET="local-demo-secret-change-me"
+EOF
+
+# 4. Generate the Prisma client (not committed, must run once after install)
+npx prisma generate
+
+# 5. Run it
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open **http://localhost:3000**.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+If `npm install` fails while compiling `better-sqlite3` (a native module),
+install build tools first: `sudo apt install build-essential python3` (Debian/
+Ubuntu) or the equivalent for your distro, then re-run `npm install`. This is
+rare — most Linux setups get a prebuilt binary and skip compilation entirely.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Windows
 
-## Learn More
+Same steps, just adjust how you create `.env` (PowerShell doesn't understand
+heredocs the same way) and use PowerShell or CMD instead of bash:
 
-To learn more about Next.js, take a look at the following resources:
+```powershell
+# 1. Get the code
+git clone https://github.com/totnotvin/FishFerries.git picnic-island-booking
+cd picnic-island-booking
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 2. Install dependencies (Node 20+ required — check with `node -v`)
+npm install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 3. Create the .env file
+@"
+DATABASE_URL="file:./dev.db"
+AUTH_SECRET="local-demo-secret-change-me"
+"@ | Out-File -Encoding utf8 .env
 
-## Deploy on Vercel
+# 4. Generate the Prisma client
+npx prisma generate
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# 5. Run it
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
-# FishFerries
->>>>>>> d3277fc18664c211a35e236052b3b15e55e9ab82
+Open **http://localhost:3000** in a browser.
+
+Notes for Windows:
+- Windows Defender/Firewall may pop up asking to allow Node.js to accept
+  connections the first time you run `npm run dev` — click **Allow**.
+- If `npm install` fails compiling `better-sqlite3`, install the
+  "Desktop development with C++" workload via the [Visual Studio Build
+  Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), then
+  re-run `npm install`. Again, this is uncommon — a prebuilt binary usually
+  covers standard Windows/Node combinations.
+- If you don't have Git installed and were just handed a zipped folder
+  instead, skip step 1 and `cd` into the extracted folder — everything else
+  is identical.
+
+---
+
+## Demo login credentials
+
+The seed data (already in the committed `dev.db`) includes one account per
+role, password `password123` for all of them:
+
+| Role | Email |
+|---|---|
+| Visitor | `visitor@picnicisland.test` |
+| Hotel Staff | `hotel@picnicisland.test` |
+| Ferry Staff | `ferry@picnicisland.test` |
+| Theme Park Staff | `park@picnicisland.test` |
+| Admin | `admin@picnicisland.test` |
+
+The `/login` page also has one-click **demo quick login** buttons for each
+role, so you don't need to type these during the actual presentation.
+
+## Optional: reset the database to a clean state
+
+If you want booking counts/revenue to look freshly-seeded right before you
+present (rather than whatever state it's in after testing), delete and
+re-seed:
+
+```bash
+# from the project root, either OS
+rm dev.db          # Windows: del dev.db
+npx prisma migrate deploy
+npx prisma db seed
+```
+
+## Optional: demo in production mode
+
+`npm run dev` is fine for a demo, but if you want to avoid the first-load
+compile flicker Turbopack does on each new route, build once and run the
+production server instead:
+
+```bash
+npm run build
+npm run start
+```
+
+Same URL (`http://localhost:3000`), just faster/steadier for a live audience.
+
+## Before you actually present
+
+Do one full run-through beforehand: quick-login as each of the 5 roles and
+click through their dashboard, and walk the visitor golden path once
+(register/login → book a hotel → book a ferry ticket → book a park
+event/beach event → view it under "My Bookings"). That's the fastest way to
+catch anything that looks off before you're doing it live.
